@@ -1,0 +1,37 @@
+#!/bin/bash
+#echo "input used: $@" >> /app/wrapper_params.log
+params=$@
+
+# recoding tasks start with "-i"
+if [[ "$params" =~ ^-i ]]; then
+    # always set threads to 0 to let ffmpeg decide
+    params=$(echo $params | sed -e "s/-threads [0-9]* /-threads 0 /")
+    # set another preset (currently '-preset veryfast')
+    params=$(echo $params | sed -e "s/-preset [a-z]* /-preset slow /")
+
+    maxrate=0
+    bufsize=0 # should be 2-3x maxrate
+
+    # Taking youtube upload recommendations.
+    # https://support.google.com/youtube/answer/1722171
+    if [[ "$params" =~ h=1080 ]]; then
+        maxrate=9M
+        bufsize=22M
+    elif [[ "$params" =~ h=720 ]]; then
+        maxrate=5M
+        bufsize=15M
+    elif [[ "$params" =~ h=480 ]]; then
+        maxrate=2500k
+        bufsize=7M
+    fi
+
+    # replace only if one of our configs was found
+    if [ "$maxrate" != "0" ]; then
+        params=$(echo $params | sed -e "s/-maxrate:v [0-9]*[kKmMgG]* /-maxrate:v $maxrate /")
+        params=$(echo $params | sed -e "s/-bufsize:v [0-9]*[kKmMgG]* /-bufsize:v $bufsize /")
+    fi
+
+fi
+
+#echo "changed: $params" >> /app/wrapper_params.log
+/usr/bin/ffmpeg $params
