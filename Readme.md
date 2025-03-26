@@ -14,14 +14,14 @@ Unfortunately I'm not so much in the Peertube code so that I could make the acco
 
 
 ## Solution
-The [comment](https://github.com/Chocobozzz/PeerTube/issues/5858#issuecomment-1987772950) about overriding the `ffmpeg` command led to this solution to change the process call to a [`ffmpeg-script`](blob/develop/ffmpeg) without touching the peertube code itself.
+The [comment](https://github.com/Chocobozzz/PeerTube/issues/5858#issuecomment-1987772950) about overriding the `ffmpeg` command led to this solution to change the process call to a [`ffmpeg-script`](peertube-remote-runner/blob/develop/ffmpeg) without touching the peertube code itself.
 
 I tested GPU support as well but skipped it when it turned a bit too cumbersome.
 
 ## Usage
 * Enable remote runners in your Peertube instance and get a runner registration token ([follow the documentation](https://docs.joinpeertube.org/admin/remote-runners#enable-remote-runners))
-* __Optional__: change the properties `maxrate` and `bufsize` values in [`ffmpeg`](blob/develop/ffmpeg). I went with recommendations from [Youtube](https://support.google.com/youtube/answer/1722171).
-* __Optional__: change the encoding preset "-preset slow" in [`ffmpeg`](blob/develop/ffmpeg). See possible values in the [H.264 wiki](https://trac.ffmpeg.org/wiki/Encode/H.264#Preset). Mind the impact to processing time [mentioned in the wiki](https://trac.ffmpeg.org/wiki/Encode/H.264#Howdothedifferentpresetsinfluenceencodingtime)!
+* __Optional__: change the properties `maxrate` and `bufsize` values in [`ffmpeg`](peertube-remote-runner/blob/main/ffmpeg). I went with recommendations from [Youtube](https://support.google.com/youtube/answer/1722171).
+* __Optional__: change the encoding preset "-preset slow" in [`ffmpeg`](peertube-remote-runner/blob/develop/ffmpeg). See possible values in the [H.264 wiki](https://trac.ffmpeg.org/wiki/Encode/H.264#Preset). Mind the impact to processing time [mentioned in the wiki](https://trac.ffmpeg.org/wiki/Encode/H.264#Howdothedifferentpresetsinfluenceencodingtime)!
 * Build the image: `docker build -t peertube-runner-whisper:latest .`
 * Start the container: 
 ```
