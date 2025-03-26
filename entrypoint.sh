@@ -1,7 +1,7 @@
 #!/bin/bash
-if [ -n "$NAME" ]; then
-    NAME="$NAME"_$(uname -n)
-else
+
+# generate a default name in case none was given
+if [ -z "$NAME" ]; then
     NAME=$(uname -n)
 fi
 
