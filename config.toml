@@ -1,0 +1,10 @@
+[jobs]
+concurrency = 8
+
+[ffmpeg]
+threads = 0
+nice = 20
+
+[transcription]
+engine = "whisper-ctranslate2"
+model = "small"

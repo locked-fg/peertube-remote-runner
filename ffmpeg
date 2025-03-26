@@ -4,8 +4,6 @@ params=$@
 
 # recoding tasks start with "-i"
 if [[ "$params" =~ ^-i ]]; then
-    # always set threads to 0 to let ffmpeg decide
-    params=$(echo $params | sed -e "s/-threads [0-9]* /-threads 0 /")
     # set another preset (currently '-preset veryfast')
     params=$(echo $params | sed -e "s/-preset [a-z]* /-preset slow /")
 
